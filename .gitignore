@@ -1,7 +1,44 @@
+# Python
 __pycache__/
 *.pyc
+.venv/
+venv/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# OS and editors
 .DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Personal agent settings (shared settings are .claude/settings.json)
 .claude/settings.local.json
 CLAUDE.local.md
+.codex/
+.cursor/
+
+# Kit build and run output
 build/
 evals/results/
+data.json
+
+# Secrets: never commit these (SEC-001, SEC-002)
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+*.gitleaks-report.json
+
+# Logs and temp
+*.log
+*.tmp
