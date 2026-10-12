@@ -1,7 +1,6 @@
 ---
 name: setup-repo
-description: Set this repository up with the eng-ai-standards kit (bootstrap, update, doctor or uninstall) using the installer shipped inside the plugin, no separate clone needed. User-invoked.
-disable-model-invocation: true
+description: Set this repository up with the eng-ai-standards kit, or update, check (doctor) or uninstall it, using the installer shipped inside the plugin. Use when the user asks to set up, install, apply, update, check or remove the kit, standards, hooks or guard in this repo. Always dry-runs and asks before applying.
 allowed-tools: Bash(python3 ${CLAUDE_PLUGIN_ROOT}/installer/eng_ai.py *), Bash(VERIFY_LIST=1 scripts/verify.sh)
 ---
 
@@ -9,7 +8,7 @@ allowed-tools: Bash(python3 ${CLAUDE_PLUGIN_ROOT}/installer/eng_ai.py *), Bash(V
 
 The installer is `${CLAUDE_PLUGIN_ROOT}/installer/eng_ai.py`. If that path still contains the literal text `CLAUDE_PLUGIN_ROOT` (Codex and Cursor do not substitute it), use `~/.eng-ai-standards/installer/eng_ai.py` instead and tell the user it needs the kit cloned there (docs/setup.md step 2).
 
-Optional argument: `doctor`, `update` or `uninstall`. With no argument: `bootstrap` when there is no `.eng-ai.json` in the repo root, else `update`.
+Pick the command from what the user asked: "check" or "doctor" → `doctor`, "update" → `update`, "remove" or "uninstall" → `uninstall`. Otherwise: `bootstrap` when there is no `.eng-ai.json` in the repo root, else `update`.
 
 ## Steps
 

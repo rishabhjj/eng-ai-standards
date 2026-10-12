@@ -83,8 +83,8 @@ class ExportParsingTest(unittest.TestCase):
 
 
 class SkillInvocationTest(unittest.TestCase):
-    AUTO = ("review-spec", "review-postmortem", "grill-with-docs", "to-spec", "to-tickets", "retro")
-    USER_ONLY = ("setup-matt-pocock-skills", "setup-repo")
+    AUTO = ("review-spec", "review-postmortem", "grill-with-docs", "to-spec", "to-tickets", "retro",
+            "setup-repo", "setup-matt-pocock-skills")
 
     def test_workflow_skills_are_model_invocable_in_both_tools(self):
         for name in self.AUTO:
@@ -92,12 +92,6 @@ class SkillInvocationTest(unittest.TestCase):
             self.assertNotIn("disable-model-invocation: true", (base / "SKILL.md").read_text(), name)
             self.assertIn("allow_implicit_invocation: true", (base / "agents/openai.yaml").read_text(), name)
             self.assertIn(f"name: {name}", (base / "SKILL.md").read_text())
-
-    def test_one_time_setup_stays_user_only(self):
-        for name in self.USER_ONLY:
-            base = KIT / ".agents/skills" / name
-            self.assertIn("disable-model-invocation: true", (base / "SKILL.md").read_text(), name)
-            self.assertIn("allow_implicit_invocation: false", (base / "agents/openai.yaml").read_text(), name)
 
     def test_publishing_skills_ask_first(self):
         self.assertIn("only after an explicit yes", (KIT / ".agents/skills/to-spec/SKILL.md").read_text())

@@ -31,7 +31,7 @@ Skills carry a one-line description that is always visible; the agent loads a sk
 | shares an incident write-up | `review-postmortem` |
 | "retro" | `retro`: turns the session's mistakes into proposed rules and checks |
 
-Only `setup-matt-pocock-skills` (one-time tracker configuration) must be typed by you. You can force any skill with `/name`.
+Nothing needs a slash. "set up this repo with the kit" runs `setup-repo`; "set up the issue tracker" runs `setup-matt-pocock-skills`; both ask before writing. You can force any skill with `/workflow:<name>`.
 
 The agent choosing a skill is still judgment: it usually triggers, not always. The checks that must always happen are hooks, not skills.
 

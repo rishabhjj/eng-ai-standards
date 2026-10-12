@@ -18,7 +18,7 @@ Check: `gitleaks version` prints a version.
 
 ### 2. The kit (Codex and Cursor only)
 
-Claude Code users skip this: the `workflow` plugin ships the installer and the `/setup-repo` skill runs it. Codex and Cursor cannot run the installer from the plugin, so clone the kit once, pinned to a release:
+Claude Code users skip this: the `workflow` plugin ships the installer, and asking Claude to "set up this repo with the kit" runs it. Codex and Cursor cannot run the installer from the plugin, so clone the kit once, pinned to a release:
 
 ```bash
 git clone --branch v0.1.0 https://github.com/rishabhjj/eng-ai-standards ~/.eng-ai-standards
@@ -72,7 +72,7 @@ Do this in a project that already has its build set up (a `package.json`, `pypro
 
 ### 4. Preview, then apply
 
-**Claude Code:** open the project and type `/setup-repo`. It runs the dry run, shows you the plan, asks before applying, then runs `doctor` and lists the verify steps (steps 5 to 8 below in one go). Say `/setup-repo doctor`, `update` or `uninstall` for the other commands.
+**Claude Code:** open the project and say "set up this repo with the kit". The `setup-repo` skill runs the dry run, shows you the plan, asks before applying, then runs `doctor` and lists the verify steps (steps 5 to 8 below in one go). "check the kit", "update the kit" and "remove the kit" run `doctor`, `update` and `uninstall`.
 
 **Codex, Cursor, or by hand** from the project root (or add `--target /path/to/project`):
 
@@ -127,7 +127,7 @@ Fix every `FAIL`. `WARN` lines are advisory. Check: exit code 0.
 
 ### 9. Commit
 
-Stage the added files by path (the guard blocks `git add -A`) and commit. Optional: run `/setup-matt-pocock-skills` once if you want `to-spec` and `to-tickets` to publish to your issue tracker; without it they write local files.
+Stage the added files by path (the guard blocks `git add -A`) and commit. Optional: say "set up the issue tracker" once if you want `to-spec` and `to-tickets` to publish to GitHub Issues; without it they write local files. Every skill is triggered by plain language; `/workflow:<name>` forces one.
 
 ## Each teammate, once per clone
 
@@ -141,7 +141,7 @@ Plus machine-level steps 1 to 3 if they are new. Claude Code offers the project'
 
 ## Upgrade
 
-Claude Code: `claude plugin update workflow@eng-ai-standards guard@eng-ai-standards`, then `/setup-repo update` in each project. Codex and Cursor:
+Claude Code: `claude plugin update workflow@eng-ai-standards guard@eng-ai-standards`, then "update the kit" in each project. Codex and Cursor:
 
 ```bash
 git -C ~/.eng-ai-standards fetch --tags && git -C ~/.eng-ai-standards checkout v0.2.0
@@ -151,7 +151,7 @@ Then in each project: `update --apply`, then `doctor`. `update` replaces only fi
 
 ## Uninstall
 
-Claude Code: `/setup-repo uninstall`. Otherwise:
+Claude Code: "remove the kit from this repo". Otherwise:
 
 ```bash
 python3 ~/.eng-ai-standards/installer/eng_ai.py uninstall

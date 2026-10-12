@@ -10,13 +10,13 @@ Pinned in `vendor.lock.json`.
 | Skill | Role |
 |---|---|
 | `grill-with-docs`, `grilling`, `domain-modeling` | clarify a plan, keep `GLOSSARY.md` and `docs/adr/` current |
-| `to-spec`, `to-tickets`, `setup-matt-pocock-skills` | spec and tickets in the issue tracker (`gh issue ...`); the first two publish only after the user says yes, setup is user-invoked |
+| `to-spec`, `to-tickets`, `setup-matt-pocock-skills` | spec and tickets in the issue tracker (`gh issue ...`); the first two publish only after the user says yes, setup asks before writing |
 | `tdd`, `codebase-design` | the single TDD policy and its design vocabulary |
 | `diagnosing-bugs` | disciplined bug diagnosis loop |
 | `retro` | turn session mistakes into checks and rules |
 | `writing-for-agents` | how to write skills and `AGENTS.md` |
 
-Local patches (re-applied by `update`, listed in the lock; after editing one run `python3 scripts/vendor.py relock`): `tdd` points at our `review` skill instead of `code-review`; `retro` points at `standards/rules/` instead of `CODING_STANDARDS.md`; `grill-with-docs`, `retro`, `to-spec` and `to-tickets` are model-invocable with trigger phrases in their descriptions, and `to-spec` asks before publishing.
+Local patches (re-applied by `update`, listed in the lock; after editing one run `python3 scripts/vendor.py relock`): `tdd` points at our `review` skill instead of `code-review`; `retro` points at `standards/rules/` instead of `CODING_STANDARDS.md`; `grill-with-docs`, `retro`, `to-spec`, `to-tickets` and `setup-matt-pocock-skills` are model-invocable with trigger phrases in their descriptions, and `to-spec` asks before publishing.
 
 Not vendored on purpose: `code-review`, `implement`, `implement-spec`, `pr` (our `review` skill owns review; one owner per stage), `wayfinder`, `triage`, `ask-matt` and the rest.
 

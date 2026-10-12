@@ -43,8 +43,8 @@
         ".agents/skills/grilling/agents/openai.yaml": "1411d7df7d99b7e6",
         ".agents/skills/retro/SKILL.md": "aba3bce509974d09",
         ".agents/skills/retro/agents/openai.yaml": "5b06d18681a90197",
-        ".agents/skills/setup-matt-pocock-skills/SKILL.md": "f148858ffb7f63c0",
-        ".agents/skills/setup-matt-pocock-skills/agents/openai.yaml": "9527de0110541c45",
+        ".agents/skills/setup-matt-pocock-skills/SKILL.md": "1ab9a32683514f2e",
+        ".agents/skills/setup-matt-pocock-skills/agents/openai.yaml": "69a4d68fa3281c8c",
         ".agents/skills/setup-matt-pocock-skills/domain.md": "593a7042218689f1",
         ".agents/skills/setup-matt-pocock-skills/issue-tracker-github.md": "f0653fe106dd8ee7",
         ".agents/skills/setup-matt-pocock-skills/issue-tracker-gitlab.md": "591a9e7057382aac",
@@ -139,6 +139,21 @@
           "new": "description: \"Conduct a retrospective on a coding session. Use when the user asks for a retro or what to improve after a session.\"",
           "old": "description: \"Conduct a retrospective on a coding session.\"",
           "path": "retro/SKILL.md"
+        },
+        {
+          "new": "",
+          "old": "disable-model-invocation: true\n",
+          "path": "setup-matt-pocock-skills/SKILL.md"
+        },
+        {
+          "new": "description: \"Configure this repo for the engineering skills: set up its issue tracker, triage label vocabulary, and domain doc layout. Use when the user asks to set up or change the issue tracker, tickets, labels, ADRs or glossary location, or when to-spec or to-tickets find no docs/agents/issue-tracker.md. Asks before writing.\"",
+          "old": "description: \"Configure this repo for the engineering skills: set up its issue tracker, triage label vocabulary, and domain doc layout. Run once before first use of the other engineering skills.\"",
+          "path": "setup-matt-pocock-skills/SKILL.md"
+        },
+        {
+          "new": "allow_implicit_invocation: true",
+          "old": "allow_implicit_invocation: false",
+          "path": "setup-matt-pocock-skills/agents/openai.yaml"
         }
       ],
       "repo": "https://github.com/mattpocock/skills",

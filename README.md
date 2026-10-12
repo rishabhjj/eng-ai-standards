@@ -14,7 +14,7 @@ Full walkthrough with checks at each step: [docs/setup.md](docs/setup.md). What 
 brew install gitleaks semgrep && claude plugin marketplace add rishabhjj/eng-ai-standards && claude plugin install guard@eng-ai-standards && claude plugin install workflow@eng-ai-standards
 ```
 
-**Once per repo**, in a project whose build already exists: in Claude Code type `/setup-repo` (dry run, apply on your yes, doctor); or by hand `python3 ~/.eng-ai-standards/installer/eng_ai.py bootstrap --apply --marketplace rishabhjj/eng-ai-standards`. Fix every `FAIL` from `doctor`, then commit.
+**Once per repo**, in a project whose build already exists: in Claude Code say "set up this repo with the kit" (dry run, apply on your yes, doctor); or by hand `python3 ~/.eng-ai-standards/installer/eng_ai.py bootstrap --apply --marketplace rishabhjj/eng-ai-standards`. Fix every `FAIL` from `doctor`, then commit.
 
 **Each teammate, once per clone:** `git config core.hooksPath .githooks`.
 
@@ -38,7 +38,7 @@ brew install gitleaks semgrep && claude plugin marketplace add rishabhjj/eng-ai-
 - **[lint-packs/](lint-packs/README.md):** configs and semgrep rules that back the rules.
 - **[Review skill](.agents/skills/review/SKILL.md):** correctness, security, tests, simplicity and data lenses; findings need a concrete failing input. Observe-only: findings are advisory.
 - **Third-party skills:** [THIRD_PARTY.md](THIRD_PARTY.md). Pinned in `vendor.lock.json`; upstream changes arrive as a reviewed PR.
-- **Planning and incident reviewers:** `review-spec` runs on any plan or design (and automatically after the AI drafts a plan for a bigger change); `review-postmortem` on incident write-ups. `to-spec` and `to-tickets` publish to the tracker only after you say yes. Only `setup-matt-pocock-skills` (one-time tracker setup) is user-invoked.
+- **Planning and incident reviewers:** `review-spec` runs on any plan or design (and automatically after the AI drafts a plan for a bigger change); `review-postmortem` on incident write-ups. `to-spec` and `to-tickets` publish to the tracker only after you say yes. Every skill triggers on plain language; the two setup skills ask before writing.
 - **Evals:** [evals/README.md](evals/README.md), run with `scripts/run-evals.sh`. **Metrics:** `scripts/export-pr-data.py` then `scripts/metrics.py` (monthly, manual).
 - **Why it is built this way, and what is not covered:** [docs/design.md](docs/design.md).
 - **Docs:** [setup](docs/setup.md), [usage](docs/usage.md), [optional tools](docs/ai-tooling.md), [sandbox](docs/sandbox.md), [maintainer checklist](docs/publish.md).
