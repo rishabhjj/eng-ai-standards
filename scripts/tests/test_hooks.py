@@ -130,10 +130,13 @@ class GuardBashTest(unittest.TestCase):
             self.assertFalse(self.blocked(command)[0], command)
 
     def test_fails_closed_when_the_helper_cannot_run(self):
-        for script, payload in [("guard-bash.sh", bash("ls")), ("protect-files.sh", edit("/r/src/a.kt"))]:
-            r = run(script, payload, {"PATH": "/bin"})
-            self.assertEqual(r.returncode, 2, script)
-            self.assertIn("BLOCKED: guard hook could not run (rc=", r.stderr, script)
+        # a PATH with bash and nothing else: /bin alone is not enough on Linux, where /bin is /usr/bin
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "bash").symlink_to("/bin/bash")
+            for script, payload in [("guard-bash.sh", bash("ls")), ("protect-files.sh", edit("/r/src/a.kt"))]:
+                r = run(script, payload, {"PATH": d})
+                self.assertEqual(r.returncode, 2, script)
+                self.assertIn("BLOCKED: guard hook could not run (rc=", r.stderr, script)
 
     def test_text_that_only_mentions_a_command_is_allowed(self):
         for command in ["git commit -m 'docs: explain why git reset --hard is blocked'",

@@ -1,0 +1,4 @@
+lint-packs/semgrep-tests/
+third_party/
+build/
+evals/
