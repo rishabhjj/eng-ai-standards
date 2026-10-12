@@ -1,0 +1,27 @@
+# OPS-001: every outbound network call has an explicit timeout.
+rules:
+  - id: eng-ai.ops-001.python-http-no-timeout
+    languages: [python]
+    severity: WARNING
+    message: "OPS-001: HTTP call without timeout=. Pass an explicit timeout."
+    metadata: {standard: OPS-001}
+    patterns:
+      - pattern-either:
+          - pattern: requests.$F(...)
+          - pattern: httpx.$F(...)
+      - pattern-not: requests.$F(..., timeout=$T, ...)
+      - pattern-not: httpx.$F(..., timeout=$T, ...)
+      - metavariable-regex:
+          metavariable: $F
+          regex: ^(get|post|put|patch|delete|head|options|request)$
+
+  - id: eng-ai.ops-001.java-httpclient-no-timeout
+    languages: [java]
+    severity: WARNING
+    message: "OPS-001: HttpClient built without connectTimeout. Set connectTimeout and a request timeout."
+    metadata: {standard: OPS-001}
+    pattern-either:
+      - pattern: HttpClient.newHttpClient()
+      - patterns:
+          - pattern: HttpClient.newBuilder(). ... .build()
+          - pattern-not: HttpClient.newBuilder(). ... .connectTimeout(...). ... .build()

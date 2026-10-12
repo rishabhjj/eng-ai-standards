@@ -1,0 +1,42 @@
+# SEC-008: no eval, dynamic code, or unsafe deserialization of untrusted data.
+rules:
+  - id: eng-ai.sec-008.python-dynamic-eval
+    languages: [python]
+    severity: WARNING
+    message: "SEC-008: eval/exec/pickle on possibly untrusted data."
+    metadata: {standard: SEC-008}
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: exec(...)
+      - pattern: pickle.loads(...)
+      - pattern: pickle.load(...)
+
+  - id: eng-ai.sec-008.python-unsafe-yaml
+    languages: [python]
+    severity: WARNING
+    message: "SEC-008: yaml.load without a safe loader. Use yaml.safe_load."
+    metadata: {standard: SEC-008}
+    patterns:
+      - pattern: yaml.load(...)
+      - pattern-not: yaml.load(..., Loader=yaml.SafeLoader)
+      - pattern-not: yaml.load(..., yaml.SafeLoader)
+      - pattern-not: yaml.load(..., Loader=yaml.CSafeLoader)
+      - pattern-not: yaml.load(..., yaml.CSafeLoader)
+
+  - id: eng-ai.sec-008.js-dynamic-eval
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: "SEC-008: eval or Function constructor."
+    metadata: {standard: SEC-008}
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: new Function(...)
+
+  - id: eng-ai.sec-008.java-native-deserialization
+    languages: [java]
+    severity: WARNING
+    message: "SEC-008: Java native deserialization of possibly untrusted data."
+    metadata: {standard: SEC-008}
+    pattern-either:
+      - pattern: new ObjectInputStream(...)
+      - pattern: new java.io.ObjectInputStream(...)

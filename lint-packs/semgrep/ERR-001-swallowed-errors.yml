@@ -1,0 +1,47 @@
+# ERR-001: no empty catch, bare except, or ignored error results.
+rules:
+  - id: eng-ai.err-001.python-swallowed
+    languages: [python]
+    severity: WARNING
+    message: "ERR-001: exception swallowed with pass. Handle it, log it, or re-raise."
+    metadata: {standard: ERR-001}
+    pattern-either:
+      - pattern: |
+          try:
+              ...
+          except $E:
+              pass
+      - pattern: |
+          try:
+              ...
+          except:
+              pass
+      - pattern: |
+          try:
+              ...
+          except $E as $X:
+              pass
+
+  - id: eng-ai.err-001.js-empty-catch
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: "ERR-001: empty catch block."
+    metadata: {standard: ERR-001}
+    pattern: |
+      try { ... } catch ($E) { }
+
+  - id: eng-ai.err-001.java-empty-catch
+    languages: [java]
+    severity: WARNING
+    message: "ERR-001: empty catch block."
+    metadata: {standard: ERR-001}
+    pattern: |
+      try { ... } catch ($T $E) { }
+
+  - id: eng-ai.err-001.kotlin-empty-catch
+    languages: [kotlin]
+    severity: WARNING
+    message: "ERR-001: empty catch block."
+    metadata: {standard: ERR-001}
+    pattern: |
+      try { ... } catch ($E: $T) { }

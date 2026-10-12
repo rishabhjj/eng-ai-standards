@@ -1,0 +1,10 @@
+// eng-ai base for tsc. Use from your tsconfig: { "extends": "./.eng-ai/lint/typescript/tsconfig.strict.json" }
+{
+  "compilerOptions": {
+    // TYP-001: strict rejects implicit any and unchecked nulls
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}

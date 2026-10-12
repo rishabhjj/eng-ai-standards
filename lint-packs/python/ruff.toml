@@ -1,0 +1,22 @@
+# eng-ai base for ruff. Extend it from your own config:
+#   extend = ".eng-ai/lint/python/ruff.toml"
+#
+# ERR-001 BLE001 blind except
+# SEC-004 S608 SQL built from strings
+# SEC-008 S307 eval, S301 pickle, S506 unsafe yaml load
+# COD-003 ERA001 commented-out code
+# CPX-001 C901 cyclomatic complexity
+# OPS-001 S113 requests call without timeout
+# OBS-001 T201 print instead of the project logger
+
+[lint]
+select = ["E", "F", "B", "UP", "SIM", "BLE", "S", "ERA", "C901", "T20"]
+
+# S603/S607 flag list-form subprocess calls, which is the safe form SEC-004 asks for.
+ignore = ["S603", "S607"]
+
+[lint.mccabe]
+max-complexity = 10
+
+[lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "T201"]

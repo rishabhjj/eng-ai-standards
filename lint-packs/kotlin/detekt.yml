@@ -1,0 +1,27 @@
+# eng-ai base for detekt. Use with buildUponDefaultConfig = true and
+#   config.setFrom(files(".eng-ai/lint/kotlin/detekt.yml", "config/detekt.yml"))
+# so the repo file overrides this one.
+
+potential-bugs:
+  # TYP-001: the !! operator. Needs type resolution, so run via the Gradle task
+  # detektMain, not the bare CLI.
+  UnsafeCallOnNullableType:
+    active: true
+  UnsafeCast:
+    active: true
+
+empty-blocks:
+  # ERR-001: no empty catch
+  EmptyCatchBlock:
+    active: true
+
+exceptions:
+  # ERR-001: no swallowed exceptions
+  SwallowedException:
+    active: true
+
+complexity:
+  # CPX-001: keep functions simple
+  CyclomaticComplexMethod:
+    active: true
+    threshold: 10

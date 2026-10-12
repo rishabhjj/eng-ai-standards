@@ -1,0 +1,53 @@
+# SEC-004: no string-built SQL or shell commands. Run: semgrep --metrics=off --config <this file> .
+rules:
+  - id: eng-ai.sec-004.python-sql-string
+    languages: [python]
+    severity: WARNING
+    message: "SEC-004: SQL built from a string. Use query parameters."
+    metadata: {standard: SEC-004}
+    pattern-either:
+      - pattern: $CUR.execute(f"...")
+      - pattern: $CUR.execute("..." + $X)
+      - pattern: $CUR.execute("..." % $X)
+      - pattern: $CUR.execute("...".format(...))
+
+  - id: eng-ai.sec-004.python-shell
+    languages: [python]
+    severity: WARNING
+    message: "SEC-004: shell invocation. Pass an argument list without shell=True."
+    metadata: {standard: SEC-004}
+    pattern-either:
+      - pattern: subprocess.$F(..., shell=True, ...)
+      - pattern: os.system(...)
+
+  - id: eng-ai.sec-004.js-sql-string
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: "SEC-004: SQL built from a string. Use parameters or the query builder."
+    metadata: {standard: SEC-004}
+    pattern-either:
+      - pattern: $DB.query(`...${$X}...`)
+      - pattern: $DB.query("..." + $X)
+      - pattern: $DB.$queryRawUnsafe(...)
+      - pattern: $DB.$executeRawUnsafe(...)
+
+  - id: eng-ai.sec-004.js-shell
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: "SEC-004: shell command from a string. Use execFile with an argument array."
+    metadata: {standard: SEC-004}
+    pattern-either:
+      - pattern: $CP.exec(`...${$X}...`)
+      - pattern: $CP.exec("..." + $X)
+
+  - id: eng-ai.sec-004.java-sql-string
+    languages: [java]
+    severity: WARNING
+    message: "SEC-004: SQL built from a string. Use PreparedStatement parameters."
+    metadata: {standard: SEC-004}
+    pattern-either:
+      - pattern: $S.executeQuery("..." + $X)
+      - pattern: $S.executeUpdate("..." + $X)
+      - pattern: $S.execute("..." + $X)
+      - pattern: $EM.createQuery("..." + $X)
+      - pattern: $EM.createNativeQuery("..." + $X)
