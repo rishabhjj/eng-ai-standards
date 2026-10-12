@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup repo"
+  short_description: "Set this repository up with the eng-ai-standards kit."
+policy:
+  allow_implicit_invocation: false

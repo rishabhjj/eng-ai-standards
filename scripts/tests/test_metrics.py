@@ -84,7 +84,7 @@ class ExportParsingTest(unittest.TestCase):
 
 class SkillInvocationTest(unittest.TestCase):
     AUTO = ("review-spec", "review-postmortem", "grill-with-docs", "to-spec", "to-tickets", "retro")
-    USER_ONLY = ("setup-matt-pocock-skills",)
+    USER_ONLY = ("setup-matt-pocock-skills", "setup-repo")
 
     def test_workflow_skills_are_model_invocable_in_both_tools(self):
         for name in self.AUTO:

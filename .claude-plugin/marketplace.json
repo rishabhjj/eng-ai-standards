@@ -70,6 +70,7 @@
         "workflow"
       ],
       "skills": [
+        "./.agents/skills/setup-repo",
         "./.agents/skills/review",
         "./.agents/skills/review-postmortem",
         "./.agents/skills/review-spec",

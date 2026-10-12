@@ -8,17 +8,13 @@ One shared engineering setup for AI coding assistants (Claude Code, Codex, Curso
 
 Full walkthrough with checks at each step: [docs/setup.md](docs/setup.md). What runs when, and how to adjust a rule per repo: [docs/usage.md](docs/usage.md). The short version:
 
-**Once per person:** install `gitleaks` (required) and `semgrep`, clone the kit at a release tag, install the `guard` and `workflow` plugins for your assistant.
+**Once per person:** install `gitleaks` (required) and `semgrep`, then the `guard` and `workflow` plugins for your assistant. Codex and Cursor users also clone the kit at a release tag (the installer lives in it; Claude Code gets it through the plugin).
 
 ```bash
-brew install gitleaks semgrep && git clone --branch v0.1.0 https://github.com/rishabhjj/eng-ai-standards ~/.eng-ai-standards
+brew install gitleaks semgrep && claude plugin marketplace add rishabhjj/eng-ai-standards && claude plugin install guard@eng-ai-standards && claude plugin install workflow@eng-ai-standards
 ```
 
-**Once per repo**, in a project whose build already exists; dry run first, then apply, then fix every `FAIL` from `doctor`, then commit:
-
-```bash
-python3 ~/.eng-ai-standards/installer/eng_ai.py bootstrap --apply --marketplace rishabhjj/eng-ai-standards
-```
+**Once per repo**, in a project whose build already exists: in Claude Code type `/setup-repo` (dry run, apply on your yes, doctor); or by hand `python3 ~/.eng-ai-standards/installer/eng_ai.py bootstrap --apply --marketplace rishabhjj/eng-ai-standards`. Fix every `FAIL` from `doctor`, then commit.
 
 **Each teammate, once per clone:** `git config core.hooksPath .githooks`.
 

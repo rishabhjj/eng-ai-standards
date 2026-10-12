@@ -16,15 +16,15 @@ brew install gitleaks semgrep
 
 Check: `gitleaks version` prints a version.
 
-### 2. The kit
+### 2. The kit (Codex and Cursor only)
 
-The installer lives in the kit, not in your project. Clone it once, pinned to a release:
+Claude Code users skip this: the `workflow` plugin ships the installer and the `/setup-repo` skill runs it. Codex and Cursor cannot run the installer from the plugin, so clone the kit once, pinned to a release:
 
 ```bash
 git clone --branch v0.1.0 https://github.com/rishabhjj/eng-ai-standards ~/.eng-ai-standards
 ```
 
-Check: `python3 ~/.eng-ai-standards/installer/eng_ai.py doctor --target .` runs (it will say `.eng-ai.json missing` in a repo that is not set up yet; that is expected).
+Check: `python3 ~/.eng-ai-standards/installer/eng_ai.py doctor --target .` runs (it says `.eng-ai.json missing` in a repo that is not set up yet; that is expected).
 
 ### 3. Plugins for your assistant
 
@@ -72,7 +72,9 @@ Do this in a project that already has its build set up (a `package.json`, `pypro
 
 ### 4. Preview, then apply
 
-From the project root (or add `--target /path/to/project`):
+**Claude Code:** open the project and type `/setup-repo`. It runs the dry run, shows you the plan, asks before applying, then runs `doctor` and lists the verify steps (steps 5 to 8 below in one go). Say `/setup-repo doctor`, `update` or `uninstall` for the other commands.
+
+**Codex, Cursor, or by hand** from the project root (or add `--target /path/to/project`):
 
 ```bash
 python3 ~/.eng-ai-standards/installer/eng_ai.py bootstrap
@@ -139,6 +141,8 @@ Plus machine-level steps 1 to 3 if they are new. Claude Code offers the project'
 
 ## Upgrade
 
+Claude Code: `claude plugin update workflow@eng-ai-standards guard@eng-ai-standards`, then `/setup-repo update` in each project. Codex and Cursor:
+
 ```bash
 git -C ~/.eng-ai-standards fetch --tags && git -C ~/.eng-ai-standards checkout v0.2.0
 ```
@@ -146,6 +150,8 @@ git -C ~/.eng-ai-standards fetch --tags && git -C ~/.eng-ai-standards checkout v
 Then in each project: `update --apply`, then `doctor`. `update` replaces only files you did not change and lists the rest. `doctor` warns when a project was set up with an older kit than the one on disk. Plugins: `claude plugin update guard@eng-ai-standards workflow@eng-ai-standards` or `codex plugin marketplace upgrade`.
 
 ## Uninstall
+
+Claude Code: `/setup-repo uninstall`. Otherwise:
 
 ```bash
 python3 ~/.eng-ai-standards/installer/eng_ai.py uninstall
