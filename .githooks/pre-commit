@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# SEC-001: scan staged changes for secrets. Also keeps the standards consistent.
+# Enable per clone: git config core.hooksPath .githooks
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks protect --staged --redact --no-banner
+else
+  echo "pre-commit: gitleaks is required (SEC-001) and is not installed. Run: brew install gitleaks (https://github.com/gitleaks/gitleaks#installing), then commit again." >&2
+  exit 1
+fi
+
+if [ -f scripts/standards-check.py ]; then python3 -I scripts/standards-check.py; fi

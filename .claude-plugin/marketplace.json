@@ -1,0 +1,91 @@
+{
+  "name": "eng-ai-standards",
+  "description": "Shared engineering setup: guard hooks and a pinned, reviewed workflow of skills with a multi-lens review.",
+  "owner": {
+    "name": "Rishabh Jain"
+  },
+  "plugins": [
+    {
+      "name": "guard",
+      "source": "./",
+      "description": "Blocks dangerous shell commands and hand-edits of secrets and lockfiles; formats edits only where the repo has its own formatter config. Hooks only, no skills.",
+      "category": "security",
+      "tags": [
+        "hooks",
+        "safety"
+      ],
+      "hooks": {
+        "PreToolUse": [
+          {
+            "matcher": "Bash",
+            "hooks": [
+              {
+                "type": "command",
+                "command": "bash \"${CLAUDE_PLUGIN_ROOT}/.claude/hooks/guard-bash.sh\""
+              }
+            ]
+          },
+          {
+            "matcher": "Edit|Write|MultiEdit",
+            "hooks": [
+              {
+                "type": "command",
+                "command": "bash \"${CLAUDE_PLUGIN_ROOT}/.claude/hooks/protect-files.sh\""
+              }
+            ]
+          }
+        ],
+        "PostToolUse": [
+          {
+            "matcher": "Edit|Write|MultiEdit",
+            "hooks": [
+              {
+                "type": "command",
+                "command": "bash \"${CLAUDE_PLUGIN_ROOT}/.claude/hooks/format.sh\""
+              }
+            ]
+          }
+        ],
+        "SessionStart": [
+          {
+            "hooks": [
+              {
+                "type": "command",
+                "command": "bash \"${CLAUDE_PLUGIN_ROOT}/.claude/hooks/check-tools.sh\""
+              }
+            ]
+          }
+        ]
+      },
+      "version": "0.1.0"
+    },
+    {
+      "name": "workflow",
+      "source": "./",
+      "description": "Multi-lens review plus the vendored engineering workflow: grill, spec, tickets, TDD, bug diagnosis, retro. Enable per project.",
+      "category": "engineering",
+      "tags": [
+        "review",
+        "tdd",
+        "workflow"
+      ],
+      "skills": [
+        "./.agents/skills/review",
+        "./.agents/skills/review-postmortem",
+        "./.agents/skills/review-spec",
+        "./.agents/skills/grill-with-docs",
+        "./.agents/skills/grilling",
+        "./.agents/skills/domain-modeling",
+        "./.agents/skills/to-spec",
+        "./.agents/skills/to-tickets",
+        "./.agents/skills/setup-matt-pocock-skills",
+        "./.agents/skills/tdd",
+        "./.agents/skills/codebase-design",
+        "./.agents/skills/diagnosing-bugs",
+        "./.agents/skills/retro",
+        "./.agents/skills/writing-for-agents"
+      ],
+      "version": "0.1.0"
+    }
+  ]
+}

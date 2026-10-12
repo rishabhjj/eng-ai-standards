@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# GIT-001: conventional commit subject. Merge, revert, fixup and squash commits are exempt.
+if [ -f .eng-ai.json ] && python3 -I -c 'import json,sys; sys.exit("GIT-001" not in json.load(open(".eng-ai.json")).get("disabled", []))' 2>/dev/null; then
+  exit 0  # disabled for this repo in .eng-ai.json
+fi
+fail() { echo "commit-msg: $1" >&2; echo "got: $subject" >&2; exit 1; }
+subject=$(head -n1 "$1")
+case "$subject" in Merge\ *|Revert\ *|fixup!\ *|squash!\ *) exit 0 ;; esac
+
+[ ${#subject} -le 72 ] || fail "subject is ${#subject} chars; max 72"
+re='^(feat|fix|chore|docs|refactor|test|perf|build|ci)(\([a-z0-9._/-]+\))?!?: .+$'
+[[ "$subject" =~ $re ]] || fail "subject must match 'type(scope): subject' (types: feat fix chore docs refactor test perf build ci)"

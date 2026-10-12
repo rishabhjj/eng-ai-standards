@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Run the repo's verify command before anything leaves the machine.
+cd "$(git rev-parse --show-toplevel)" || exit 1
+[ -x scripts/verify.sh ] || exit 0
+scripts/verify.sh
