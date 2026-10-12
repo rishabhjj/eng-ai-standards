@@ -1,0 +1,20 @@
+name: vendor-check
+on:
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      # Exit 1 means upstream changed something we vendor or install. Read the diff, then run
+      # scripts/vendor.py update and open a PR; never auto-merge.
+      - run: python3 -I scripts/vendor.py check

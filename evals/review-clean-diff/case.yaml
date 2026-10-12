@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: review-clean-diff
+tags: [smoke, review]
+context:
+  scaffold_script: scaffold.sh

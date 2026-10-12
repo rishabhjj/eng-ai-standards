@@ -1,0 +1,67 @@
+name: eng-ai-security
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      # Pinned to a commit; Renovate bumps it. Scanners below are installed at pinned versions
+      # (Go modules are verified by the Go checksum database, PyPI pins by version).
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      # New checks start report-only. Add a check to the "enforce" list in .eng-ai.json to make it block.
+      - name: Read enforce list
+        id: cfg
+        run: |
+          [ -f .eng-ai.json ] || exit 0
+          python3 -I -c 'import json; [print(f"{t}=true") for t in json.load(open(".eng-ai.json")).get("enforce", []) if t in {"osv", "semgrep", "trivy", "zizmor"}]' >> "$GITHUB_OUTPUT"
+
+      - name: gitleaks (SEC-001)
+        run: |
+          go install github.com/zricethezav/gitleaks/v8@v8.30.1
+          args=(--redact --no-banner --source .)
+          [ -f .gitleaks-baseline.json ] && args+=(--baseline-path .gitleaks-baseline.json)
+          "$(go env GOPATH)/bin/gitleaks" detect "${args[@]}"
+
+      - name: actionlint
+        run: |
+          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+          "$(go env GOPATH)/bin/actionlint"
+
+      - name: osv-scanner (dependency CVEs)
+        continue-on-error: ${{ steps.cfg.outputs.osv != 'true' }}
+        run: |
+          go install github.com/google/osv-scanner/v2/cmd/osv-scanner@v2.7.0
+          "$(go env GOPATH)/bin/osv-scanner" scan source -r .
+
+      - name: semgrep (SEC-004, SEC-008, ERR-001)
+        if: hashFiles('.eng-ai/lint/semgrep/*.yml', 'lint-packs/semgrep/*.yml') != ''
+        continue-on-error: ${{ steps.cfg.outputs.semgrep != 'true' }}
+        run: |
+          pip install --quiet semgrep==1.180.0
+          rules=.eng-ai/lint/semgrep
+          [ -d "$rules" ] || rules=lint-packs/semgrep  # the kit repo itself keeps the rules at their source
+          semgrep --metrics=off --disable-version-check --error --config "$rules" .
+
+      - name: zizmor (workflow security)
+        continue-on-error: ${{ steps.cfg.outputs.zizmor != 'true' }}
+        run: |
+          pip install --quiet zizmor==1.30.1
+          zizmor --offline .github/workflows
+
+      - name: trivy (containers and IaC)
+        if: hashFiles('**/Dockerfile', '**/*.tf') != ''
+        continue-on-error: ${{ steps.cfg.outputs.trivy != 'true' }}
+        run: |
+          go install github.com/aquasecurity/trivy/cmd/trivy@v0.75.0
+          "$(go env GOPATH)/bin/trivy" fs --scanners vuln,secret,misconfig,license --severity HIGH,CRITICAL --exit-code 1 .
