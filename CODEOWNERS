@@ -1,0 +1,14 @@
+# Anything that runs on teammates' machines or defines a rule needs the owner's review.
+
+*                          @rishabhjj
+/.claude/hooks/            @rishabhjj
+/.claude-plugin/           @rishabhjj
+/.githooks/                @rishabhjj
+/.github/                  @rishabhjj
+/installer/                @rishabhjj
+/standards/                @rishabhjj
+/lint-packs/               @rishabhjj
+/templates/                @rishabhjj
+/vendor.lock.json          @rishabhjj
+/third_party/              @rishabhjj
+/.agents/skills/           @rishabhjj
