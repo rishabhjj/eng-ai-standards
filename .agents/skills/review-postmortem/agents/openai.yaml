@@ -1,0 +1,5 @@
+interface:
+  display_name: "Review postmortem"
+  short_description: "Review an incident postmortem for completeness and real follow-ups."
+policy:
+  allow_implicit_invocation: true
