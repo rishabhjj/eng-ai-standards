@@ -1,0 +1,12 @@
+{
+  "kit_version": "0.1.0",
+  "languages": ["python"],
+  "verify": [
+    "python3 -I -m unittest discover -s scripts/tests",
+    "python3 -I scripts/standards-check.py",
+    "python3 -I scripts/vendor.py verify",
+    "scripts/test-semgrep-rules.sh",
+    "scripts/validate-plugin.sh"
+  ],
+  "enforce": ["zizmor", "semgrep"]
+}
